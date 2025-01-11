@@ -482,7 +482,7 @@ hwloc__levelzero_devices_get(struct hwloc_topology *topology,
       snprintf(buffer, sizeof(buffer), "ze%u", zeidx); // ze0d0 ?
       osdev->name = strdup(buffer);
       osdev->depth = HWLOC_TYPE_DEPTH_UNKNOWN;
-      osdev->attr->osdev.types = HWLOC_OBJ_OSDEV_COPROC | HWLOC_OBJ_OSDEV_GPU;
+      osdev->attr->osdev.type = HWLOC_OBJ_OSDEV_GPU;
       osdev->subtype = strdup("LevelZero");
 
       snprintf(buffer, sizeof(buffer), "%u", i);
@@ -529,7 +529,7 @@ hwloc__levelzero_devices_get(struct hwloc_topology *topology,
             snprintf(tmp, sizeof(tmp), "ze%u.%u", zeidx, k);
             subosdevs[k]->name = strdup(tmp);
             subosdevs[k]->depth = HWLOC_TYPE_DEPTH_UNKNOWN;
-            subosdevs[k]->attr->osdev.types = HWLOC_OBJ_OSDEV_COPROC | HWLOC_OBJ_OSDEV_GPU;
+            subosdevs[k]->attr->osdev.type = HWLOC_OBJ_OSDEV_GPU;
             subosdevs[k]->subtype = strdup("LevelZero");
             snprintf(tmp, sizeof(tmp), "%u", k);
             hwloc_obj_add_info(subosdevs[k], "LevelZeroSubdeviceID", tmp);
@@ -751,7 +751,6 @@ hwloc_levelzero_discover(struct hwloc_backend *backend, struct hwloc_disc_status
 
   struct hwloc_topology *topology = backend->topology;
   enum hwloc_type_filter_e filter;
-  int added;
   ze_result_t res;
   struct hwloc_osdev_array oarray;
   struct hwloc_levelzero_ports hports;
@@ -782,14 +781,12 @@ hwloc_levelzero_discover(struct hwloc_backend *backend, struct hwloc_disc_status
     return 0;
   }
 
-  added = hwloc__levelzero_devices_get(topology, &oarray, &hports);
+  hwloc__levelzero_devices_get(topology, &oarray, &hports);
   hwloc__levelzero_ports_connect(topology, &oarray, &hports);
   hwloc__levelzero_ports_destroy(&hports);
 
   hwloc__levelzero_osdev_array_free(&oarray);
 
-  if (added > 0)
-    hwloc_modify_infos(hwloc_topology_get_infos(topology), HWLOC_MODIFY_INFOS_OP_ADD, "Backend", "LevelZero");
   return 0;
 }
 
