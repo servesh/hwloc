@@ -484,6 +484,7 @@ hwloc__levelzero_devices_get(struct hwloc_topology *topology,
       osdev->depth = HWLOC_TYPE_DEPTH_UNKNOWN;
       osdev->attr->osdev.type = HWLOC_OBJ_OSDEV_GPU;
       osdev->subtype = strdup("LevelZero");
+      hwloc_obj_add_info(osdev, "Backend", "LevelZero");
 
       snprintf(buffer, sizeof(buffer), "%u", i);
       hwloc_obj_add_info(osdev, "LevelZeroDriverIndex", buffer);
@@ -531,6 +532,7 @@ hwloc__levelzero_devices_get(struct hwloc_topology *topology,
             subosdevs[k]->depth = HWLOC_TYPE_DEPTH_UNKNOWN;
             subosdevs[k]->attr->osdev.type = HWLOC_OBJ_OSDEV_GPU;
             subosdevs[k]->subtype = strdup("LevelZero");
+            hwloc_obj_add_info(subosdevs[k], "Backend", "LevelZero");
             snprintf(tmp, sizeof(tmp), "%u", k);
             hwloc_obj_add_info(subosdevs[k], "LevelZeroSubdeviceID", tmp);
 
