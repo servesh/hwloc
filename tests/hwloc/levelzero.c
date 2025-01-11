@@ -163,7 +163,7 @@ int main(void)
     for (j=0; j<nbdevices; j++, k++) {
       hwloc_bitmap_t set;
       hwloc_obj_t osdev, ancestor;
-      const char *value;
+      //const char *value;
 
       osdev = hwloc_levelzero_get_sysman_device_osdev(topology, sdvh[j]);
       assert(osdev);
